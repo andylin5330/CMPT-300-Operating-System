@@ -1,0 +1,40 @@
+1. 
+Explain how the system establishes the corresponding physical location. 
+Answer: 
+The computer has 2^32 bytes for a virtual-memory space.
+The computer has 2^18 bytes for a physical memory.
+The virtual memory is implemented bypaging, and the page size is 4096 (2^12) bytes.
+We can find a page number with the first 20 bits of the virtual address,
+and the page offset is the last 12 bits of the virtual address.
+Establishing the corresponding physical location need to use the translation look-aside buffer hardware.
+
+Hardware aspects:
+The page number and offset are sparated in the logical address.
+The page number is sent to the TLB.
+If page number is sent to the TLB, the frame number is accessed from the TLB,
+and the frame number and offset are added together to obtain the physical address.
+
+Software aspects:
+Only when the page number is not sent into the TLB, the frame number must be looked up in the page table in main memory.
+
+
+2. 
+What is the maximum acceptable page-fault rate for an effective access time of no more than 200
+nanoseconds?
+Answer: 
+Average page fault time:
+(8ms * (1-70%)) + (20ms * 70%) 
+= 2.4ms + 14ms
+= 16.4ms
+= 1.64 * 10^7 nanoseconds
+
+effective access time:
+200ns = [(1-page-fault%) * 100ns] + [(page-fault rate) * (1.64 * 10^7ns)]
+200ns = 100 - (100*page-fault rate) + (1.64*10^7 * page-fault rate)
+100ns = (1.64*10^7 - 100) * page-fault rate
+page-fault rate = 0.00000609759
+
+Therefore, the maximum page-fault rate is 0.00061%.
+
+
+
